@@ -1,6 +1,9 @@
 package com.example.geofenceapp
 
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
 import com.example.geofenceapp.network.remote.testAppModule
+import io.mockk.mockk
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -13,19 +16,20 @@ class GeofenceHelperTest : AutoCloseKoinTest() {
 
     @Before
     fun setUp() {
+        val mockContext = mockk<Context>(relaxed = true)
         startKoin { modules(testAppModule) }
-        subject = GeofenceHelper(subject.applicationContext)
+        subject = GeofenceHelper(mockContext)
     }
 
     @Test
     fun `onError returns an error string associated with Exception`() {
         val actual = subject.getErrorString(
             Exception(
-            "OutOfMemeoryException"
+                "OutOfMemoryException"
             )
         )
         val expected = "OutOfMemoryException"
-        Assert.assertEquals(expected,actual)
+        Assert.assertEquals(expected, actual)
 
     }
 }
