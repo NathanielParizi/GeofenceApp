@@ -22,6 +22,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
 
     private lateinit var mMap: GoogleMap
     private lateinit var goeFencingClient: GeofencingClient
+    private lateinit var geoFenceHelper: GeofenceHelper
+
 
     private val FINE_REQUEST_REQUEST_CODE = 10111
     private val GEOFENCE_RADIUS: Double = 50.0
@@ -128,6 +130,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
         addMaker(latLng!!)
         addGeoFencedArea(latLng, GEOFENCE_RADIUS)
     }
+
 
 
 }

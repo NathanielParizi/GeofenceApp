@@ -1,5 +1,8 @@
 package com.example.geofenceapp
 
+import com.example.geofenceapp.network.remote.GeofenceRepository
+import com.example.geofenceapp.network.remote.GeofenceService
+import com.example.geofenceapp.viewModels.GeofenceViewModel
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -16,7 +19,13 @@ import java.util.concurrent.TimeUnit
 
 val appModule = module {
 
+    viewModel { GeofenceViewModel() }
     single { MapsActivity()}
+    single { GeofenceBroadCastReceiver()}
+    single { GeofenceHelper(androidContext())}
+    single{ GeofenceRepository()}
+    single {GeofenceService()}
+
 
     single {
         val gson: Gson = GsonBuilder()
