@@ -1,8 +1,8 @@
 package com.example.geofenceapp
 
 import android.content.Context
-import androidx.test.core.app.ApplicationProvider
 import com.example.geofenceapp.network.remote.testAppModule
+import com.google.android.gms.location.Geofence
 import io.mockk.mockk
 import org.junit.Assert
 import org.junit.Before
@@ -16,6 +16,8 @@ class GeofenceHelperTest : AutoCloseKoinTest() {
 
     @Before
     fun setUp() {
+        // Ideally we don't want to mock Context because it manages a broad scope to handle resources
+        // I couldn't get ApplicationProvider.getApplicationContext to work properly so used this mock as an alternative
         val mockContext = mockk<Context>(relaxed = true)
         startKoin { modules(testAppModule) }
         subject = GeofenceHelper(mockContext)
@@ -30,6 +32,15 @@ class GeofenceHelperTest : AutoCloseKoinTest() {
         )
         val expected = "OutOfMemoryException"
         Assert.assertEquals(expected, actual)
+    }
 
+    @Test
+    fun `getGeofence returns a complex object from it's associated Builder class`(){
+        val geofence = Geofence.Builder()
+            .setCircularRegion(10.0, 12.0, 100.0F)
+            .setRequestId("GEOFENCE_ID")
+            .setTransitionTypes(1).setLoiteringDelay(5000)
+            .setExpirationDuration(Geofence.NEVER_EXPIRE)
+            .build()
     }
 }
