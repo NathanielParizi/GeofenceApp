@@ -77,6 +77,8 @@ dependencies {
     implementation 'org.koin:koin-test:2.0.1'
 
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+    implementation 'io.mockk:mockk:1.10.2'
+
 
 
 }

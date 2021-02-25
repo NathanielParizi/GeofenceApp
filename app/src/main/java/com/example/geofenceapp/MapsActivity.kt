@@ -158,6 +158,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
                 Log.d(TAG, "addGeoFence: Geofence added")
             }
             .addOnFailureListener {
+                val errorMessage = geoFenceHelper.getErrorString(it)
+                Log.d(TAG, "addGeoFence: $errorMessage")
             }
 
     }
