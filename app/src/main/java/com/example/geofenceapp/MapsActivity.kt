@@ -2,6 +2,7 @@ package com.example.geofenceapp
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
@@ -13,15 +14,17 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
 
     private lateinit var mMap: GoogleMap
     private lateinit var goeFencingClient: GeofencingClient
 
     private val FINE_REQUEST_REQUEST_CODE = 10111
+    private val GEOFENCE_RADIUS: Double = 50.0
 
 
 
@@ -108,6 +111,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val markerOption = MarkerOptions().position(latLng)
         mMap.addMarker(markerOption)
 
+    }
+
+    private fun addGeoFencedArea(latLng: LatLng, radius: Double) {
+        val circleOptions = CircleOptions()
+        circleOptions.center(latLng)
+        circleOptions.radius(radius)
+        circleOptions.strokeColor(Color.argb(255, 0, 255, 0))
+        circleOptions.fillColor(Color.argb(25, 0, 255, 30))
+        circleOptions.strokeWidth(4f)
+        mMap.addCircle(circleOptions)
+    }
+
+    override fun onMapLongClick(latLng: LatLng?) {
+        mMap.clear()
+        addMaker(latLng!!)
+        addGeoFencedArea(latLng, GEOFENCE_RADIUS)
     }
 
 
