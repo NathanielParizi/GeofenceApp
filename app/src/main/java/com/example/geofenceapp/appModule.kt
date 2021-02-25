@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit
 
 val appModule = module {
 
+    single { MapsActivity()}
 
     single {
         val gson: Gson = GsonBuilder()

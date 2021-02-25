@@ -1,6 +1,8 @@
 package com.example.geofenceapp
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.geofenceapp.databinding.ActivityMainBinding
 import org.koin.android.ext.koin.androidContext
@@ -17,6 +19,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         initializeApplication()
         supportActionBar?.title = "Geofence App"
+        intent = Intent(applicationContext, MapsActivity::class.java)
+        startActivity(intent)
     }
 
     private fun initializeApplication() {
