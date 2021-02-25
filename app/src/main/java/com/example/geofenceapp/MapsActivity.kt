@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -128,6 +129,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
         mMap.clear()
         addMaker(latLng!!)
         addGeoFencedArea(latLng, GEOFENCE_RADIUS)
+        addGeoFence(latLng, GEOFENCE_RADIUS.toFloat())
     }
 
     private fun addGeoFence(latLng: LatLng, radius: Float) {
@@ -140,7 +142,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
             radius,
             transitionType
         )
+        val geoFencingRequest = geoFenceHelper.getGeoFencingRequest(geofence)
+        val pendingIntent = geoFenceHelper.geofencePendingIntent
 
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+        // task
+        goeFencingClient.addGeofences(geoFencingRequest, pendingIntent)
+            .addOnSuccessListener {
+                Log.d(TAG, "addGeoFence: Geofence added")
+            }
+            .addOnFailureListener {
+            }
 
     }
 

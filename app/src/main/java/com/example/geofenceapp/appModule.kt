@@ -20,11 +20,11 @@ import java.util.concurrent.TimeUnit
 val appModule = module {
 
     viewModel { GeofenceViewModel() }
-    single { MapsActivity()}
-    single { GeofenceBroadCastReceiver()}
-    single { GeofenceHelper(androidContext())}
-    single{ GeofenceRepository()}
-    single {GeofenceService()}
+    single { MapsActivity() }
+    single { GeofenceBroadCastReceiver() }
+    single { GeofenceHelper(androidContext()) }
+    single { GeofenceRepository() }
+    single { GeofenceService() }
 
 
     single {
