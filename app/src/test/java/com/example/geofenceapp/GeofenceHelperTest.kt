@@ -3,6 +3,8 @@ package com.example.geofenceapp
 import android.content.Context
 import com.example.geofenceapp.network.remote.testAppModule
 import com.google.android.gms.location.Geofence
+import com.google.android.gms.location.GeofencingRequest
+import com.google.android.gms.maps.model.LatLng
 import io.mockk.mockk
 import org.junit.Assert
 import org.junit.Before
@@ -13,6 +15,7 @@ import org.koin.test.AutoCloseKoinTest
 class GeofenceHelperTest : AutoCloseKoinTest() {
 
     private lateinit var subject: GeofenceHelper
+    private val TRANSITION_TYPE = 1
 
     @Before
     fun setUp() {
@@ -35,12 +38,30 @@ class GeofenceHelperTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun `getGeofence returns a complex object from it's associated Builder class`(){
-        val geofence = Geofence.Builder()
+    fun `getGeofence returns a complex object from it's associated Builder class`() {
+        val expected = Geofence.Builder()
             .setCircularRegion(10.0, 12.0, 100.0F)
             .setRequestId("GEOFENCE_ID")
-            .setTransitionTypes(1).setLoiteringDelay(5000)
+            .setTransitionTypes(TRANSITION_TYPE).setLoiteringDelay(5000)
             .setExpirationDuration(Geofence.NEVER_EXPIRE)
             .build()
+        val actual = subject.getGeofence("GEOFENCE_ID", LatLng(10.0, 12.0), 100.0F, 1)
+        Assert.assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `getGeoFencingRequest returns a Geofencing request`() {
+
+        val geofence = subject.getGeofence(
+            "GEOFENCE_ID",
+            LatLng(10.0, 15.0),
+            100.0F,
+            TRANSITION_TYPE
+        )
+        val expected = GeofencingRequest.Builder().addGeofence(geofence)
+            .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+            .build()
+        val actual = subject.getGeoFencingRequest(geofence)
+        Assert.assertEquals(expected.toString(), actual.toString())
     }
 }

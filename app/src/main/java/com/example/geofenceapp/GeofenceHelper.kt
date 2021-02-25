@@ -36,6 +36,7 @@ class GeofenceHelper(base: Context?) : ContextWrapper(base), KoinComponent {
             .setExpirationDuration(Geofence.NEVER_EXPIRE)
             .build()
     }
+
     fun getErrorString(e: Exception): String {
         if (e is ApiException) {
             val apiException = e as ApiException
