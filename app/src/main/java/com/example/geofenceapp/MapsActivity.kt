@@ -3,13 +3,13 @@ package com.example.geofenceapp
 import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingClient
 import com.google.android.gms.location.LocationServices
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -17,18 +17,19 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import org.koin.android.ext.android.inject
+
+private const val TAG = "MapsActivity"
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
 
     private lateinit var mMap: GoogleMap
     private lateinit var goeFencingClient: GeofencingClient
-    private lateinit var geoFenceHelper: GeofenceHelper
-
+    private val geoFenceHelper: GeofenceHelper by inject()
 
     private val FINE_REQUEST_REQUEST_CODE = 10111
     private val GEOFENCE_RADIUS: Double = 50.0
-
-
+    private val GEOFENCE_ID = "GEOFENCE_ID"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,8 +39,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
         goeFencingClient = LocationServices.getGeofencingClient(this)
-
-
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -131,6 +130,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
         addGeoFencedArea(latLng, GEOFENCE_RADIUS)
     }
 
+    private fun addGeoFence(latLng: LatLng, radius: Float) {
+        val transitionType = Geofence.GEOFENCE_TRANSITION_ENTER or
+                Geofence.GEOFENCE_TRANSITION_EXIT or
+                Geofence.GEOFENCE_TRANSITION_DWELL
+        val geofence = geoFenceHelper.getGeofence(
+            GEOFENCE_ID,
+            latLng,
+            radius,
+            transitionType
+        )
 
+
+    }
 
 }

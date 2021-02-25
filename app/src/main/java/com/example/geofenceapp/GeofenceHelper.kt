@@ -7,8 +7,9 @@ import android.content.Intent
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingRequest
 import com.google.android.gms.maps.model.LatLng
+import org.koin.core.KoinComponent
 
-class GeofenceHelper(base: Context?) : ContextWrapper(base) {
+class GeofenceHelper(base: Context?) : ContextWrapper(base), KoinComponent {
 
     val geofencePendingIntent: PendingIntent by lazy {
         val intent = Intent(this, GeofenceBroadCastReceiver::class.java)
